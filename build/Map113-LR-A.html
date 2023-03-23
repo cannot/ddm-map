@@ -1,0 +1,244 @@
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ระบบบริหารจัดการงานวางท่อ</title>
+
+  <link rel="icon" href="lib/map/assets/img/icon.ico" type="image/x-icon" />
+
+  <!-- Fonts and icons -->
+  <script src="lib/map/assets/js/plugin/webfont/webfont.min.js"></script>
+  <script>
+    WebFont.load({
+      google: { families: ["Lato:300,400,700,900"] },
+      custom: {
+        families: [
+          "Prompt",
+          "Flaticon",
+          "Font Awesome 5 Solid",
+          "Font Awesome 5 Regular",
+          "Font Awesome 5 Brands",
+          "simple-line-icons",
+        ],
+        urls: ["/Gis/lib/map/assets/css/fonts.min.css"],
+      },
+      active: function () {
+        sessionStorage.fonts = true;
+      },
+    });
+  </script>
+
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="lib/map/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="lib/map/assets/css/atlantis.min.css" />
+
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <!-- <link rel="stylesheet" href="lib/map/assets/css/demo.css" /> -->
+
+  <link rel="stylesheet" href="lib/map/css/demo.css" />
+  <!-- leaflet -->
+  <link rel="stylesheet" href="lib/map/dist/leaflet.css" />
+  <script src="lib/map/dist/leaflet.js"></script>
+
+  <!-- MarkerCluster -->
+  <link rel="stylesheet" href="lib/map/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="lib/map/dist/MarkerCluster.Default.css" />
+  <script src="lib/map/dist/leaflet.markercluster.js"></script>
+
+  <!-- data realworld -->
+  <script src="lib/map/dist/realworld.50000.1.js"></script>
+  <script src="lib/map/dist/realworld.50000.2.js"></script>
+  <script src="lib/map/data/data_department.js"></script>
+
+  <!-- L.Icon.Pulse -->
+  <link rel="stylesheet" href="lib/map/dist/L.Icon.Pulse.css" />
+  <script src="lib/map/dist/L.Icon.Pulse.js"></script>
+
+  <!-- leaflet-geoman -->
+  <script src="lib/map/dist/leaflet-geoman.min.js"></script>
+  <link rel="stylesheet" href="lib/map/dist/leaflet-geoman.css" />
+
+  <!-- Control.Sidebar -->
+  <script src="lib/map/dist/L.Control.Sidebar.js"></script>
+  <link rel="stylesheet" href="lib/map/dist/L.Control.Sidebar.css" />
+
+  <link href="lib/map/dist/select2.min.css" rel="stylesheet" />
+  <link href="lib/map/dist/leaflet.scalefactor.min.css" rel="stylesheet" type="text/css">
+
+  <link href="lib/map/css/sense-style.css" rel="stylesheet" />
+
+  <script>
+    var page = "Map113-LR-A";
+    let currentWorkingLayer = undefined;
+    var changeControlOptions = {
+      editControls: false,
+      drawMarker: true,
+    };
+
+    function initMap() {
+      var map_google = new google.maps.Map(document.getElementById('map2'), {
+        center: { lat: 13.7234186, lng: 100.4762319 },
+        zoom: 50
+      });
+    }
+  </script>
+
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="content">
+      <div class="map" id="map"></div>
+      <div class="map2" id="map2"></div>
+    </div>
+  </div>
+
+  <!-- job-detail-modal -->
+  <div class="modal fade" id="job-detail-modal" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false"
+    data-backdrop="static">
+    <div class="modal-dialog modal-dialog-slide-left w-25">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">แก้ไขรายละเอียด</h4>
+          <!-- <button type="button" class="btn btn-outline-secondary btn-close-modal" data-dismiss="modal"
+            aria-label="Close">
+            <i class="fas fa-xl fa-times-circle"></i>
+          </button> -->
+        </div>
+        <div class="modal-body">
+          <form id="form-job-detail">
+            <div class="form-group row">
+              <label>ประเภทท่อ</label>
+              <select class="form-control form-control-sm select2" name="p_pipe_type" id="ddl-pipe-type"></select>
+            </div>
+            <div class="form-group row">
+              <label>ขนาดท่อ</label>
+              <select class="form-control form-control-sm select2" name="p_pipe_size" id="ddl-pipe-size"></select>
+            </div>
+            <div class="form-group row">
+              <label>วัสดุ</label>
+                <select class="form-control form-control-sm select2" name="p_pipe_mtrl" id="ddl-pipe-mtrl"></select>
+            </div>
+            <div class="form-group row">
+              <label>ระดับความรุนแรง</label>
+              <select class="form-control form-control-sm select2" name="p_leak_level" id="ddl-leak-levl"
+                required></select>
+            </div>
+            <div class="form-group row">
+              <label>ประเภทการแตกรั่ว</label>
+              <select class="form-control form-control-sm select2" name="p_leak_type" id="ddl-leak-type"></select>
+            </div>
+            <div class="form-group row">
+              <label>เลขที่อุปกรณ์/ท่อ</label>
+                <input type="text" class="form-control form-control-sm" id="p_pipe_tag" />
+            </div>
+            <div class="form-group row">
+              <label>หมายเหตุ</label>
+              <textarea class="form-control form-control-sm" id="p_remark" rows="2"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer align-right">
+          <input type="hidden" id="p_sequence" />
+          <input type="hidden" id="p_editable" />
+          <input type="hidden" id="p_mark_lat" />
+          <input type="hidden" id="p_mark_lng" />
+          <input type="hidden" id="leaflet_id" />
+          <button type="button" class="btn btn-primary" id="btn-job-detail-submit">
+            บันทึก
+          </button>
+          <button type="button" class="btn btn-warning" id="btn-job-detail-cancel">
+            ยกเลิก
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- job-detail-modal -->
+
+  <!--   Core JS Files   -->
+  <script src="lib/map/assets/js/core/jquery.3.2.1.min.js"></script>
+  <script src="lib/map/assets/js/core/popper.min.js"></script>
+  <script src="lib/map/assets/js/core/bootstrap.min.js"></script>
+  <script src="lib/map/assets/js/core/jquery.validate.min.js"></script>
+
+  <!-- jQuery Loading Overay -->
+  <script src="lib/map/assets/js/plugin/jquery-loading-overlay/loading.overlay.min.js"></script>
+
+  <!-- jQuery UI -->
+  <script src="lib/map/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+  <script src="lib/map/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+
+  <!-- jQuery Scrollbar -->
+  <script src="lib/map/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+  <!-- Datatables -->
+  <script src="lib/map/assets/js/plugin/datatables/datatables.min.js"></script>
+
+  <!-- Bootstrap Notify -->
+  <script src="lib/map/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+  <!-- Sweet Alert -->
+  <!-- <script src="lib/map/assets/js/plugin/sweetalert/sweetalert.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css">
+
+  <!-- Atlantis JS -->
+  <script src="lib/map/assets/js/atlantis.min.js"></script>
+
+  <!-- Atlantis DEMO methods, don't include it in your project! -->
+  <script src="lib/map/assets/js/setting-demo.js"></script>
+  <script src="lib/map/assets/js/demo.js"></script>
+
+  <script src="lib/map/dist/leaflet-simple-map-screenshoter.js"></script>
+  <script src="lib/map/dist/FileSaver.min.js"></script>
+
+  <link href="lib/map/dist/select2.min.css" rel="stylesheet" />
+  <script src="lib/map/dist/select2.min.js"></script>
+
+  <link href="lib/map/dist/leaflet.draw.css" rel="stylesheet" />
+  <script src="lib/map/dist/leaflet.draw.js"></script>
+
+  <link href="lib/map/dist/leaflet.scalefactor.min.css" rel="stylesheet" />
+  <script src="lib/map/dist/leaflet.scalefactor.min.js"></script>
+
+  <script src="lib/map/dist/turf.min.js"></script>
+  <script src="lib/map/dist/Path.Drag.js"></script>
+  <script src="lib/map/dist/Leaflet.Editable.js"></script>
+
+  <script src="lib/map/dist/leaflet-clone-layer.js"></script>
+
+  <script src="lib/map/js/sense-util.js"></script>
+  <script src="lib/map/js/base-map.js"></script>
+  <script src="lib/map/js/Map113-LR-A.js"></script>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCU1_eAFv-oYuIGudHPFmghQi1ViFE9ij0&libraries=places&callback=initMap"></script>
+  <script>
+    // Shorthand for $( document ).ready()
+    showLoadingOverlay();
+    $(function () {
+      initialMapWithDataQuery();
+      fetchDropDownListOptions('011', '#ddl-leak-levl');
+      fetchDropDownListOptions('019', '#ddl-leak-type');
+      fetchDropDownListOptions('020', '#ddl-pipe-mtrl');
+      fetchDropDownListOptions('012', '#ddl-pipe-type');
+      fetchDropDownListOptions('013', '#ddl-pipe-size');
+
+      $(".select2").select2({
+        width: '100%',
+        dropdownParent: $('#job-detail-modal')
+      });
+
+      $('#form-job-detail').validate();
+
+      // setTimeout(function () {
+      //   $('#job-master-modal').modal('show');
+      // }, 1000);
+    });
+  </script>
+
+</body>
+
+</html>

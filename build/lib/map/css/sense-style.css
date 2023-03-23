@@ -1,0 +1,145 @@
+.custom-template {
+    position: fixed;
+    top: 65px;
+    /*transform: translateY(-50%);*/
+    left: 0px;
+    width: 30%;
+    /*height: max-content;*/
+    display: block;
+    /*z-index: 1;*/
+    /*background: #ffffff;*/
+    /*transition: all .3s;*/
+    z-index: 1003;
+    /*	box-shadow: -1px 1px 20px rgba(69, 65, 78, 0.15);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;*/
+    /*transition: all .5s;*/
+}
+
+.custom-toggle {
+    position: fixed;
+    width: 35px;
+    height: 40px;
+    background-color: black;
+    top: 50%;
+    left: 370px;
+    /*transform: translateY(-50%);*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    /*
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    */
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    /*border-right: 1px solid #177dff;*/
+    cursor: pointer;
+    color: #ffffff;
+    font-weight: 600;
+    z-index: 1004;
+    /*box-shadow: -5px 5px 20px rgba(69, 65, 78, 0.21);*/
+}
+
+/* custom boostrap modal dialog (slide from left side) */
+.modal-dialog-slide-left {
+    /* min-height: 100%; */
+    margin: 0 auto 0 0;
+    background: #fff;
+}
+
+.modal.fade .modal-dialog.modal-dialog-slide-left {
+    -webkit-transform: translate(-50%, 0)scale(1);
+    transform: translate(-50%, 0)scale(1);
+}
+
+.modal.fade.show .modal-dialog.modal-dialog-slide-left {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+    display: flex;
+    align-items: stretch;
+    -webkit-box-align: stretch;
+    height: 100%;
+}
+
+.modal.fade.show .modal-dialog.modal-dialog-slide-left .modal-body {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.modal-dialog-slide-left .modal-content {
+    border: 0;
+}
+
+.modal-dialog-slide-left .modal-header {
+    padding: 8px !important;
+}
+
+.modal-dialog-slide-left .modal-footer {
+    display: block;
+    padding: 8px !important;
+    text-align: right;
+}
+
+.modal-dialog-slide-left .modal-header {
+    float: left;
+}
+/* custom boostrap modal dialog (slide from left side) */
+
+/* custom boostrap modal dialog (slide from left side) */
+.modal-dialog-slide-right {
+    /* min-height: 100%; */
+    margin: 0 0 0 auto;
+    background: #fff;
+}
+
+.modal.fade .modal-dialog.modal-dialog-slide-right {
+    -webkit-transform: translate(100%, 0)scale(1);
+    transform: translate(100%, 0)scale(1);
+}
+
+.modal.fade.show .modal-dialog.modal-dialog-slide-right {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+    display: flex;
+    align-items: stretch;
+    -webkit-box-align: stretch;
+}
+
+.modal.fade.show .modal-dialog.modal-dialog-slide-right .modal-body {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.modal-dialog-slide-right .modal-content {
+    border: 0;
+}
+
+.modal-dialog-slide-right .modal-header {
+    padding: 8px !important;
+}
+
+.modal-dialog-slide-right .modal-footer {
+    display: block;
+    padding: 8px !important;
+    text-align: right;
+}
+
+.modal-dialog-slide-right .modal-header {
+    float: left;
+}
+/* custom boostrap modal dialog (slide from right side) */
+
+/* custom boostrap form control */
+.form-check label,
+.form-group label {
+    margin-bottom: auto !important;
+}
+
+/* custom boostrap form control */
+
+
+.modal-footer button {
+    margin: 0 !important;
+}
